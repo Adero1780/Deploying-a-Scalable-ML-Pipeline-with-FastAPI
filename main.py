@@ -1,3 +1,15 @@
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+def read_root():
+    return {"message": "Hello from the API!"}
+
+@app.post("/predict")
+def predict(data: dict):
+    return {"result": "<=50K"}
+
 import os
 
 import pandas as pd
@@ -33,7 +45,7 @@ path = None # TODO: enter the path for the saved model
 model = load_model(path)
 
 # TODO: create a RESTful API using FastAPI
-app = None # your code here
+# app = None # your code here
 
 # TODO: create a GET on the root giving a welcome message
 @app.get("/")
