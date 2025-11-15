@@ -12,7 +12,6 @@ The API exposes two endpoints:
 ### Quick Start
 
 Clone the repository:
-```bash
 git clone https://github.com/adero1780/Deploying-a-Scalable-ML-Pipeline-with-FastAPI.git
 cd Deploying-a-Scalable-ML-Pipeline-with-FastAPI
 
