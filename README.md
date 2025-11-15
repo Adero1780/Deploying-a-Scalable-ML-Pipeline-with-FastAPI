@@ -58,4 +58,5 @@ Screenshots of Swagger UI (GET and POST requests) and terminal outputs are inclu
 ## Notes for Reviewers
 * Both inference paths (<=50K and >50K) are demonstrated.
 * Swagger UI screenshots and client outputs are embedded in the Word Document.
+    * The Word document, ML_Pipeline_Swagger UI_API, has been added to GitHub as well.
 * The API is reproducible: same inputs yield the same outputs.
