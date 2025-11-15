@@ -9,6 +9,13 @@ The API exposes two endpoints:
 
 * POST /predict → Accepts a JSON payload of features, processes the input using the trained encoder and model, and returns the prediction as a string label.
 
+### Quick Start
+
+Clone the repository:
+```bash
+git clone https://github.com/adero1780/Deploying-a-Scalable-ML-Pipeline-with-FastAPI.git
+cd Deploying-a-Scalable-ML-Pipeline-with-FastAPI
+
 ## Environment Setup
 Working in a command-line environment is recommended for ease of use with git and dvc. If on Windows, WSL1 or WSL2 is recommended.
 * Option 1: use the supplied file environment.yml to create a new environment with conda
