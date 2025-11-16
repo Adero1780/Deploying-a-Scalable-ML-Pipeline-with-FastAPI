@@ -1,15 +1,3 @@
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/")
-def read_root():
-    return {"message": "Hello from the API!"}
-
-@app.post("/predict")
-def predict(data: dict):
-    return {"result": "<=50K"}
-
 import os
 
 import pandas as pd
@@ -18,6 +6,8 @@ from pydantic import BaseModel, Field
 
 from ml.data import apply_label, process_data
 from ml.model import inference, load_model
+
+app = FastAPI()
 
 # DO NOT MODIFY
 class Data(BaseModel):
@@ -38,11 +28,11 @@ class Data(BaseModel):
     hours_per_week: int = Field(..., example=40, alias="hours-per-week")
     native_country: str = Field(..., example="United-States", alias="native-country")
 
-path = None # TODO: enter the path for the saved encoder 
-encoder = load_model(path)
+encoder = load_model("model/encoder.pkl")
 
-path = None # TODO: enter the path for the saved model 
-model = load_model(path)
+model = load_model("model/model.pkl")
+
+lb = load_model("model/label_binarizer.pkl")
 
 # TODO: create a RESTful API using FastAPI
 # app = None # your code here
@@ -52,11 +42,11 @@ model = load_model(path)
 async def get_root():
     """ Say hello!"""
     # your code here
-    pass
+    return {"message": "Hello from the API!"}
 
 
 # TODO: create a POST on a different path that does model inference
-@app.post("/data/")
+@app.post("/predict")
 async def post_inference(data: Data):
     # DO NOT MODIFY: turn the Pydantic model into a dict.
     data_dict = data.dict()
@@ -76,11 +66,38 @@ async def post_inference(data: Data):
         "sex",
         "native-country",
     ]
-    data_processed, _, _, _ = process_data(
+    X, _, _, _ = process_data(
         # your code here
         # use data as data input
         # use training = False
         # do not need to pass lb as input
+        data,
+        categorical_features=cat_features,
+        label=None,
+        training=False,
+        encoder=encoder,
+        lb=lb
     )
-    _inference = None # your code here to predict the result using data_processed
-    return {"result": apply_label(_inference)}
+
+    # Run inference
+    preds = inference(model, X)
+
+    # Map preduction back to label
+
+    # If preds are numeric (0/1), map back to string labels
+    result = None
+
+    try:
+
+        result = lb.inverse_transform(preds)[0]
+
+    except Exception:
+
+        # If preds are already strings, just return them
+        if preds is not None and len(preds) > 0:
+            result = str(prreds[0])
+
+    if result is None:
+        result = "Prediction failed"
+
+    return {"result": result}
